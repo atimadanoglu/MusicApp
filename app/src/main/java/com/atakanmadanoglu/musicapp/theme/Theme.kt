@@ -1,4 +1,4 @@
-package com.atakanmadanoglu.musicapp.ui.theme
+package com.atakanmadanoglu.musicapp.theme
 
 import android.app.Activity
 import android.os.Build

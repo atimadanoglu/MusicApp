@@ -1,4 +1,4 @@
-package com.atakanmadanoglu.musicapp.data.remote.dto
+package com.atakanmadanoglu.musicapp.data.service.remote.dto
 
 data class Track(
     val id: Int,

@@ -1,10 +1,10 @@
-package com.atakanmadanoglu.musicapp.data.remote
+package com.atakanmadanoglu.musicapp.data.service.remote
 
-import com.atakanmadanoglu.musicapp.data.remote.dto.Albums
-import com.atakanmadanoglu.musicapp.data.remote.dto.Artist
-import com.atakanmadanoglu.musicapp.data.remote.dto.Artists
-import com.atakanmadanoglu.musicapp.data.remote.dto.Genres
-import com.atakanmadanoglu.musicapp.data.remote.dto.Tracks
+import com.atakanmadanoglu.musicapp.data.service.remote.dto.Albums
+import com.atakanmadanoglu.musicapp.data.service.remote.dto.Artist
+import com.atakanmadanoglu.musicapp.data.service.remote.dto.Artists
+import com.atakanmadanoglu.musicapp.data.service.remote.dto.Genres
+import com.atakanmadanoglu.musicapp.data.service.remote.dto.Tracks
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -24,13 +24,13 @@ interface MusicService {
     ): Artist
 
     @GET("/artist/{artist_id}/top")
-    suspend fun getArtistTracksByArtistId(
+    suspend fun getArtistTracksById(
         @Path("artist_id") artistId: Int,
         @Query("limit") limit: Int = 50
     ): Tracks
 
     @GET("/artist/{artist_id}/albums")
-    suspend fun getArtistsAlbumsByArtistId(
+    suspend fun getArtistAlbumsById(
         @Path("artist_id") artistId: Int
     ): Albums
 }

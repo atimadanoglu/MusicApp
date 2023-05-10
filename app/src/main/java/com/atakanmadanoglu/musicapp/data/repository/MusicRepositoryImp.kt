@@ -8,6 +8,7 @@ import com.atakanmadanoglu.musicapp.data.service.remote.dto.Artist
 import com.atakanmadanoglu.musicapp.data.service.remote.dto.Artists
 import com.atakanmadanoglu.musicapp.data.service.remote.dto.Genres
 import com.atakanmadanoglu.musicapp.data.service.remote.dto.Tracks
+import com.atakanmadanoglu.musicapp.di.IoDispatcher
 import com.atakanmadanoglu.musicapp.domain.model.Music
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -20,7 +21,7 @@ class MusicRepositoryImp @Inject constructor(
     private val remoteMusicDataSource: RemoteMusicDataSource,
     private val localMusicDataSource: LocalMusicDataSource,
     private val musicEntityMapper: MusicEntityMapper,
-    private val ioDispatcher: CoroutineDispatcher
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ): MusicRepository {
     override suspend fun getGenres(): Genres = withContext(ioDispatcher) {
         remoteMusicDataSource.getGenres()

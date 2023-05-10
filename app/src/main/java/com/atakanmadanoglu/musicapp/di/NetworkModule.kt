@@ -1,6 +1,6 @@
 package com.atakanmadanoglu.musicapp.di
 
-import com.atakanmadanoglu.musicapp.data.remote.MusicService
+import com.atakanmadanoglu.musicapp.data.service.remote.MusicService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

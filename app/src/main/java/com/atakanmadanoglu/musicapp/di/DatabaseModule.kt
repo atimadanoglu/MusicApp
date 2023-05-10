@@ -2,6 +2,7 @@ package com.atakanmadanoglu.musicapp.di
 
 import android.content.Context
 import androidx.room.Room
+import com.atakanmadanoglu.musicapp.data.service.local.MusicDao
 import com.atakanmadanoglu.musicapp.data.service.local.MusicDatabase
 import dagger.Module
 import dagger.Provides
@@ -20,4 +21,9 @@ object DatabaseModule {
     ): MusicDatabase = Room.databaseBuilder(
         context, MusicDatabase::class.java, MusicDatabase.DB_NAME
     ).build()
+
+    @Provides
+    fun provideMusicDao(
+        musicDatabase: MusicDatabase
+    ): MusicDao = musicDatabase.getMusicDao()
 }

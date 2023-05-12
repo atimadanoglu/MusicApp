@@ -7,6 +7,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.atakanmadanoglu.musicapp.presentation.artist_list.navigation.artistListScreen
+import com.atakanmadanoglu.musicapp.presentation.artist_list.navigation.navigateToArtistListScreen
+import com.atakanmadanoglu.musicapp.presentation.favorite_tracks.navigation.favoriteTracksScreen
+import com.atakanmadanoglu.musicapp.presentation.music_categories.navigation.musicCategoriesScreen
+import com.atakanmadanoglu.musicapp.presentation.navigation.Screen
 import com.atakanmadanoglu.musicapp.theme.MusicAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -15,13 +23,34 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MusicAppTheme {
+            MusicAppTheme(
+                darkTheme = false
+            ) {
+                val navController = rememberNavController()
+                val backStackEntry = navController.currentBackStackEntryAsState()
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-
+                    NavHost(
+                        navController = navController,
+                        startDestination = Screen.MusicCategoryScreen.route
+                    ) {
+                        val currentRoute =
+                            backStackEntry.value?.destination?.route ?: Screen.MusicCategoryScreen.route
+                        musicCategoriesScreen(
+                            currentRoute = currentRoute,
+                            onBottomNavItemClicked = { route ->
+                                navController.navigate(route)
+                            },
+                            onCardClicked = { genreId ->
+                                navController.navigateToArtistListScreen(genreId)
+                            }
+                        )
+                        artistListScreen()
+                        favoriteTracksScreen()
+                    }
                 }
             }
         }

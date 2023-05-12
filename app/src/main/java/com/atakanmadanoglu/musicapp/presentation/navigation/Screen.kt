@@ -13,5 +13,5 @@ sealed class Screen(val route: String, @StringRes val titleId: Int) {
     object ArtistListScreen: Screen("artist_list", R.string.artist_list)
     object ArtistDetailsScreen: Screen("artist_details", R.string.artist_details)
     object AlbumDetailsScreen: Screen("album_details", R.string.album_details)
-    object LikedMusicsScreen: Screen("liked_musics", R.string.liked_musics)
+    object FavoriteTracksScreen: Screen("favorite_tracks", R.string.liked_musics)
 }

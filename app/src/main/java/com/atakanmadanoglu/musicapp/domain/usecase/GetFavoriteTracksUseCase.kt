@@ -5,11 +5,11 @@ import com.atakanmadanoglu.musicapp.domain.mapper.MusicMapper
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class GetMusicsUseCase @Inject constructor(
+class GetFavoriteTracksUseCase @Inject constructor(
     private val repository: MusicRepository,
     private val musicMapper: MusicMapper
 ) {
-    operator fun invoke() = repository.getMusics().map {
-        it.map { music -> musicMapper.mapToUi(music) }
+    operator fun invoke() = repository.getFavoriteTracks().map {
+        it.map { favoriteTrack -> musicMapper.mapToFavoriteTrackUI(favoriteTrack) }
     }
 }

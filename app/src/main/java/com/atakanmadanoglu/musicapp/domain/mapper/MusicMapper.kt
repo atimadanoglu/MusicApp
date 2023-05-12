@@ -58,7 +58,7 @@ class MusicMapper @Inject constructor() {
     fun mapToArtistDomain(
         artistUi: ArtistUI
     ): Artist = with(artistUi) {
-        Artist(id, name, picture, trackListUrl)
+        Artist(id, name, image, trackListUrl)
     }
 
     fun mapToGenreUi(

@@ -10,6 +10,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.atakanmadanoglu.musicapp.presentation.album_details.navigation.navigateToAlbumDetails
+import com.atakanmadanoglu.musicapp.presentation.artist_details.navigation.artistDetailsScreen
+import com.atakanmadanoglu.musicapp.presentation.artist_details.navigation.navigateToArtistDetailsScreen
 import com.atakanmadanoglu.musicapp.presentation.artist_list.navigation.artistListScreen
 import com.atakanmadanoglu.musicapp.presentation.artist_list.navigation.navigateToArtistListScreen
 import com.atakanmadanoglu.musicapp.presentation.favorite_tracks.navigation.favoriteTracksScreen
@@ -44,12 +47,21 @@ class MainActivity : ComponentActivity() {
                             onBottomNavItemClicked = { route ->
                                 navController.navigate(route)
                             },
-                            onCardClicked = { genreId ->
-                                navController.navigateToArtistListScreen(genreId)
+                            onCardClicked = { genreId, genreName ->
+                                navController.navigateToArtistListScreen(genreId, genreName)
                             }
                         )
-                        artistListScreen()
+                        artistListScreen(
+                            onCardClicked = { id ->
+                                navController.navigateToArtistDetailsScreen(id)
+                            }
+                        )
                         favoriteTracksScreen()
+                        artistDetailsScreen(
+                            onCardClicked = { id->
+                                navController.navigateToAlbumDetails(id)
+                            }
+                        )
                     }
                 }
             }

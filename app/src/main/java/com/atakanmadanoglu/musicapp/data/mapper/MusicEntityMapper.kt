@@ -54,7 +54,7 @@ class MusicEntityMapper @Inject constructor() {
     fun mapToArtistDomain(
         artistDTO: ArtistDTO
     ): Artist = with(artistDTO) {
-        Artist(id, name, picture, tracklist)
+        Artist(id, name, picture_medium, tracklist)
     }
 
     fun mapToArtistDTO(

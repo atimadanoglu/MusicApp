@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import com.atakanmadanoglu.musicapp.data.service.local.MusicDatabase.Companion.VERSION
 
 @Database(
-    entities = [MusicEntity::class],
+    entities = [FavoriteTrackEntity::class],
     version = VERSION,
     exportSchema = true
 )

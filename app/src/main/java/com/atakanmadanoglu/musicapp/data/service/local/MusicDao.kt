@@ -8,12 +8,12 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MusicDao {
-    @Query("SELECT * FROM music")
-    fun getMusics(): Flow<List<MusicEntity>>
+    @Query("SELECT * FROM track")
+    fun getMusics(): Flow<List<FavoriteTrackEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addMusic(musicEntity: MusicEntity)
+    suspend fun addMusic(favoriteTrackEntity: FavoriteTrackEntity)
 
-    @Query("DELETE FROM music WHERE id = :musicId")
+    @Query("DELETE FROM track WHERE id = :musicId")
     suspend fun deleteMusicById(musicId: Int)
 }

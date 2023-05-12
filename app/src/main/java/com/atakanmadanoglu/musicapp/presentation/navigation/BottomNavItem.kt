@@ -18,7 +18,7 @@ sealed class BottomNavItem(
     )
 
     object Favorites: BottomNavItem(
-        route = Screen.LikedMusicsScreen.route,
+        route = Screen.FavoriteTracksScreen.route,
         iconId = R.drawable.heart_outlined,
         secondaryIconId = R.drawable.heart_filled,
         contentDescription = R.string.favorites

@@ -1,6 +1,6 @@
 package com.atakanmadanoglu.musicapp.data.service.remote.dto
 
-data class Album(
+data class AlbumDTO(
     val id: Int,
     val title: String,
     val cover: String,

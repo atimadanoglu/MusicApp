@@ -3,13 +3,12 @@ package com.atakanmadanoglu.musicapp.data.repository
 import com.atakanmadanoglu.musicapp.data.datasource.local.LocalMusicDataSource
 import com.atakanmadanoglu.musicapp.data.datasource.remote.RemoteMusicDataSource
 import com.atakanmadanoglu.musicapp.data.mapper.MusicEntityMapper
-import com.atakanmadanoglu.musicapp.data.service.remote.dto.Albums
-import com.atakanmadanoglu.musicapp.data.service.remote.dto.Artist
-import com.atakanmadanoglu.musicapp.data.service.remote.dto.Artists
-import com.atakanmadanoglu.musicapp.data.service.remote.dto.Genres
-import com.atakanmadanoglu.musicapp.data.service.remote.dto.Tracks
 import com.atakanmadanoglu.musicapp.di.IoDispatcher
-import com.atakanmadanoglu.musicapp.domain.model.Music
+import com.atakanmadanoglu.musicapp.domain.model.Album
+import com.atakanmadanoglu.musicapp.domain.model.Artist
+import com.atakanmadanoglu.musicapp.domain.model.FavoriteTrack
+import com.atakanmadanoglu.musicapp.domain.model.Genre
+import com.atakanmadanoglu.musicapp.domain.model.Track
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -23,45 +22,60 @@ class MusicRepositoryImp @Inject constructor(
     private val musicEntityMapper: MusicEntityMapper,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ): MusicRepository {
-    override suspend fun getGenres(): Genres = withContext(ioDispatcher) {
-        remoteMusicDataSource.getGenres()
+    override suspend fun getGenres(): List<Genre> = withContext(ioDispatcher) {
+        remoteMusicDataSource.getGenres().map {
+            musicEntityMapper.mapToGenreDomain(it)
+        }
     }
 
     override suspend fun getArtistsByGenre(
         genreId: Int
-    ): Artists = withContext(ioDispatcher) {
-        remoteMusicDataSource.getArtistsByGenre(genreId)
+    ): List<Artist> = withContext(ioDispatcher) {
+        remoteMusicDataSource
+            .getArtistsByGenre(genreId)
+            .map {
+                musicEntityMapper.mapToArtistDomain(it)
+            }
     }
 
     override suspend fun getArtistById(
         artistId: Int
     ): Artist = withContext(ioDispatcher) {
-        remoteMusicDataSource.getArtistById(artistId)
+        val artistDTO = remoteMusicDataSource.getArtistById(artistId)
+        musicEntityMapper.mapToArtistDomain(artistDTO)
     }
 
     override suspend fun getArtistAlbumsById(
         artistId: Int
-    ): Albums = withContext(ioDispatcher) {
-        remoteMusicDataSource.getArtistAlbumsById(artistId)
+    ): List<Album> = withContext(ioDispatcher) {
+        remoteMusicDataSource
+            .getArtistAlbumsById(artistId)
+            .map {
+                musicEntityMapper.mapToAlbumDomain(it)
+            }
     }
 
     override suspend fun getArtistTracksById(
         artistId: Int
-    ): Tracks = withContext(ioDispatcher) {
-        remoteMusicDataSource.getArtistTracksById(artistId)
+    ): List<Track> = withContext(ioDispatcher) {
+        remoteMusicDataSource
+            .getArtistTracksById(artistId)
+            .map {
+                musicEntityMapper.mapToTrackDomain(it)
+            }
     }
 
-    override fun getMusics(): Flow<List<Music>> =
+    override fun getFavoriteTracks(): Flow<List<FavoriteTrack>> =
         localMusicDataSource.getMusics().map {
-            it.map { musicEntity ->
-                musicEntityMapper.mapToDomain(musicEntity)
+            it.map { trackEntity ->
+                musicEntityMapper
+                    .mapToFavoriteTrackDomain(trackEntity)
             }
         }.flowOn(ioDispatcher)
 
-    override suspend fun addMusic(
-        music: Music
-    ) = withContext(ioDispatcher) {
-        val musicEntity = musicEntityMapper.mapToEntity(music)
+    override suspend fun addFavoriteTrack(favoriteTrack: FavoriteTrack) = withContext(ioDispatcher) {
+        val musicEntity = musicEntityMapper
+            .mapToFavoriteTrackEntity(favoriteTrack)
         localMusicDataSource.addMusic(musicEntity)
     }
 

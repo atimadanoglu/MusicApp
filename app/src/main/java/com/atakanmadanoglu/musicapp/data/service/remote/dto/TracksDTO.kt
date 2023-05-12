@@ -1,5 +1,5 @@
 package com.atakanmadanoglu.musicapp.data.service.remote.dto
 
-data class Albums(
-    val data: List<Album>
+data class TracksDTO(
+    val data: List<TrackDTO>
 )

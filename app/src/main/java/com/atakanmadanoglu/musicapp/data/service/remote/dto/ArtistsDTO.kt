@@ -1,5 +1,5 @@
 package com.atakanmadanoglu.musicapp.data.service.remote.dto
 
-data class Genres(
-    val data : List<Genre>
+data class ArtistsDTO(
+    val data: List<ArtistDTO>
 )

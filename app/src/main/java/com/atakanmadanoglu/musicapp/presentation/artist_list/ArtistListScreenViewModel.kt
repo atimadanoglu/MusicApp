@@ -14,7 +14,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class ArtistListUiState(
-    val artists: List<ArtistUI> = listOf()
+    val artists: List<ArtistUI> = listOf(),
+    val topAppBarTitle: String = ""
 )
 
 @HiltViewModel
@@ -27,6 +28,12 @@ class ArtistListScreenViewModel @Inject constructor(
 
     private val _artistListUiState = MutableStateFlow(ArtistListUiState())
     val artistListUiState: StateFlow<ArtistListUiState> get() = _artistListUiState
+
+    init {
+        _artistListUiState.update {
+            it.copy(topAppBarTitle = artistListArgs.genreName)
+        }
+    }
 
     fun getArtists() {
         viewModelScope.launch {

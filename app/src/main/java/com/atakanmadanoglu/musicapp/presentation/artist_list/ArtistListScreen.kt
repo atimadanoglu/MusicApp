@@ -11,13 +11,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.atakanmadanoglu.musicapp.presentation.model.ArtistUI
 import com.atakanmadanoglu.musicapp.presentation.music_categories.CardView
 import com.atakanmadanoglu.musicapp.presentation.music_categories.PageTitleTopAppBar
-import com.atakanmadanoglu.musicapp.presentation.navigation.Screen
 
 @Composable
 fun ArtistListRoute(
@@ -30,9 +28,10 @@ fun ArtistListRoute(
     }
     ArtistListScreen(
         artists = state.artists,
-        onCardClicked = {
-            onCardClicked(it)
-        }
+        onCardClicked = { id ->
+            onCardClicked(id)
+        },
+        topBarTitle = state.topAppBarTitle
     )
 }
 
@@ -41,19 +40,20 @@ fun ArtistListRoute(
 fun ArtistListScreen(
     modifier: Modifier = Modifier,
     artists: List<ArtistUI>,
-    onCardClicked: (itemId: Int) -> Unit
+    onCardClicked: (itemId: Int) -> Unit,
+    topBarTitle: String
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
-            PageTitleTopAppBar(title = stringResource(id = Screen.ArtistListScreen.titleId))
+            PageTitleTopAppBar(title = topBarTitle)
         }
     ) {
         ArtistListVerticalGridList(
             artists = artists,
             contentPaddingValues = it,
-            onCardClicked = {
-                onCardClicked(it)
+            onCardClicked = { id ->
+                onCardClicked(id)
             }
         )
     }
@@ -75,7 +75,7 @@ fun ArtistListVerticalGridList(
         ) { artist ->
             CardView(
                 title = artist.name,
-                imageUrl = artist.picture,
+                imageUrl = artist.image,
                 onItemClicked = {
                     onCardClicked(artist.id)
                 }

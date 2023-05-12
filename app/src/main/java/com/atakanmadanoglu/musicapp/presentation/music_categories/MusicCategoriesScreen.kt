@@ -43,7 +43,7 @@ import com.atakanmadanoglu.musicapp.presentation.navigation.Screen
 fun MusicCategoriesRoute(
     currentRoute: String,
     onBottomNavItemClicked: (route: String) -> Unit,
-    onCardClicked: (itemId: Int) -> Unit,
+    onCardClicked: (itemId: Int, itemName: String) -> Unit,
     musicCategoryViewModel: MusicCategoriesViewModel = hiltViewModel()
 ) {
     val uiState by musicCategoryViewModel.musicCategoryUiState.collectAsStateWithLifecycle()
@@ -53,7 +53,7 @@ fun MusicCategoriesRoute(
     MusicCategoriesScreen(
         genres = uiState.genres,
         onBottomNavItemClicked = { onBottomNavItemClicked(it) },
-        onCardClicked = { onCardClicked(it) },
+        onCardClicked = { id, name -> onCardClicked(id, name) },
         currentRoute = currentRoute,
     )
 }
@@ -64,7 +64,7 @@ private fun MusicCategoriesScreen(
     modifier: Modifier = Modifier,
     genres: List<GenreUI>,
     onBottomNavItemClicked: (route: String) -> Unit,
-    onCardClicked: (itemId: Int) -> Unit,
+    onCardClicked: (itemId: Int, itemName: String) -> Unit,
     currentRoute: String
 ) {
     Scaffold(
@@ -83,7 +83,7 @@ private fun MusicCategoriesScreen(
         MusicCategoryVerticalGridList(
             genres = genres,
             contentPaddingValues = it,
-            onCardClicked = { id -> onCardClicked(id) }
+            onCardClicked = { id, name -> onCardClicked(id, name) }
         )
     }
 }
@@ -142,7 +142,7 @@ fun BottomNavigationBar(
 fun MusicCategoryVerticalGridList(
     genres: List<GenreUI>,
     contentPaddingValues: PaddingValues,
-    onCardClicked: (itemId: Int) -> Unit
+    onCardClicked: (itemId: Int, itemName: String) -> Unit
 ) {
     LazyVerticalGrid(
         contentPadding = contentPaddingValues,
@@ -156,7 +156,7 @@ fun MusicCategoryVerticalGridList(
                 title = genre.name,
                 imageUrl = genre.pictureUrl,
                 onItemClicked = {
-                    onCardClicked(genre.id)
+                    onCardClicked(genre.id, genre.name)
                 }
             )
         }

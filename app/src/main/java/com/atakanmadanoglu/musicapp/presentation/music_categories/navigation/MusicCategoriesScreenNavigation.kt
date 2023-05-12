@@ -12,12 +12,18 @@ fun NavController.navigateToMusicCategoriesScreen() {
 
 fun NavGraphBuilder.musicCategoriesScreen(
     currentRoute: String,
+    onBottomNavItemClicked: (String) -> Unit,
     onCardClicked: (id: Int) -> Unit
 ) {
     composable(route = Screen.MusicCategoryScreen.route) {
         MusicCategoriesRoute(
             currentRoute = currentRoute,
-            onCardClicked = { onCardClicked(it) }
+            onBottomNavItemClicked = {
+                onBottomNavItemClicked(it)
+            },
+            onCardClicked = {
+                onCardClicked(it)
+            }
         )
     }
 }

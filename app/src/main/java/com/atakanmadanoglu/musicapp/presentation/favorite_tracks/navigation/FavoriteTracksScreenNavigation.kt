@@ -5,7 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.atakanmadanoglu.musicapp.presentation.navigation.Screen
 
-fun NavController.navigateFavoriteTracksScreen() {
+fun NavController.navigateToFavoriteTracksScreen() {
     this.navigate(Screen.FavoriteTracksScreen.route)
 }
 

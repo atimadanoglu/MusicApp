@@ -35,23 +35,24 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import com.atakanmadanoglu.musicapp.data.service.remote.dto.Genre
-import com.atakanmadanoglu.musicapp.presentation.MusicViewModel
+import com.atakanmadanoglu.musicapp.presentation.model.GenreUI
 import com.atakanmadanoglu.musicapp.presentation.navigation.BottomNavItem
 import com.atakanmadanoglu.musicapp.presentation.navigation.Screen
 
 @Composable
 fun MusicCategoriesRoute(
     currentRoute: String,
+    onBottomNavItemClicked: (route: String) -> Unit,
     onCardClicked: (itemId: Int) -> Unit,
-    musicCategoriesViewModel: MusicViewModel = hiltViewModel()
+    musicCategoryViewModel: MusicCategoriesViewModel = hiltViewModel()
 ) {
-    val state by musicCategoriesViewModel.genres.collectAsStateWithLifecycle()
+    val uiState by musicCategoryViewModel.musicCategoryUiState.collectAsStateWithLifecycle()
     LaunchedEffect(key1 = Unit) {
-        musicCategoriesViewModel.getGenres()
+        musicCategoryViewModel.getGenres()
     }
     MusicCategoriesScreen(
-        genres = state,
+        genres = uiState.genres,
+        onBottomNavItemClicked = { onBottomNavItemClicked(it) },
         onCardClicked = { onCardClicked(it) },
         currentRoute = currentRoute,
     )
@@ -61,9 +62,10 @@ fun MusicCategoriesRoute(
 @Composable
 private fun MusicCategoriesScreen(
     modifier: Modifier = Modifier,
-    genres: List<Genre>,
+    genres: List<GenreUI>,
+    onBottomNavItemClicked: (route: String) -> Unit,
     onCardClicked: (itemId: Int) -> Unit,
-    currentRoute: String // via navbackstackentry of navController.currentBackStackEntryAsState()
+    currentRoute: String
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -73,7 +75,7 @@ private fun MusicCategoriesScreen(
         bottomBar = {
             BottomNavigationBar(
                 items = listOf(BottomNavItem.Category, BottomNavItem.Favorites),
-                onItemClicked = {},
+                onBottomNavItemClicked = { onBottomNavItemClicked(it) },
                 currentRoute = currentRoute,
             )
         }
@@ -105,10 +107,9 @@ fun PageTitleTopAppBar(
 fun BottomNavigationBar(
     modifier: Modifier = Modifier,
     items: List<BottomNavItem>,
-    onItemClicked: (BottomNavItem) -> Unit,
+    onBottomNavItemClicked: (String) -> Unit,
     currentRoute: String
 ) {
-    //val backStackEntry = navController.currentBackStackEntryAsState()
     NavigationBar(
         modifier = modifier
             .height(60.dp)
@@ -116,9 +117,8 @@ fun BottomNavigationBar(
         containerColor = Color.White
     ) {
         items.forEach { item ->
-            //val selected = (item.route == backStackEntry.value?.destination?.route)
             val selected = (item.route == currentRoute)
-            val iconId = if (selected) {
+            val iconId = if (!selected) {
                 item.iconId
             } else {
                 item.secondaryIconId
@@ -132,7 +132,7 @@ fun BottomNavigationBar(
                     )
                 },
                 selected = selected,
-                onClick = { onItemClicked(item) }
+                onClick = { onBottomNavItemClicked(item.route) }
             )
         }
     }
@@ -140,7 +140,7 @@ fun BottomNavigationBar(
 
 @Composable
 fun MusicCategoryVerticalGridList(
-    genres: List<Genre>,
+    genres: List<GenreUI>,
     contentPaddingValues: PaddingValues,
     onCardClicked: (itemId: Int) -> Unit
 ) {
@@ -154,7 +154,7 @@ fun MusicCategoryVerticalGridList(
         ) {genre ->
             CardView(
                 title = genre.name,
-                imageUrl = genre.picture,
+                imageUrl = genre.pictureUrl,
                 onItemClicked = {
                     onCardClicked(genre.id)
                 }

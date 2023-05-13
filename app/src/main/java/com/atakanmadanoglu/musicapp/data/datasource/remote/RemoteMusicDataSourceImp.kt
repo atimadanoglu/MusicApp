@@ -4,6 +4,7 @@ import com.atakanmadanoglu.musicapp.data.service.remote.MusicService
 import com.atakanmadanoglu.musicapp.data.service.remote.dto.AlbumDTO
 import com.atakanmadanoglu.musicapp.data.service.remote.dto.ArtistDTO
 import com.atakanmadanoglu.musicapp.data.service.remote.dto.GenreDTO
+import com.atakanmadanoglu.musicapp.data.service.remote.dto.SpecificAlbumDTO
 import javax.inject.Inject
 
 class RemoteMusicDataSourceImp @Inject constructor(
@@ -24,7 +25,7 @@ class RemoteMusicDataSourceImp @Inject constructor(
         artistId: Long
     ): List<AlbumDTO> = musicService.getArtistAlbumsById(artistId).data
 
-    /*override suspend fun getArtistTracksById(
-        artistId: Int
-    ): List<TrackDTO> = musicService.getArtistTracksById(artistId).data*/
+    override suspend fun getAlbumById(
+        albumId: Long
+    ): SpecificAlbumDTO = musicService.getAlbumById(albumId)
 }

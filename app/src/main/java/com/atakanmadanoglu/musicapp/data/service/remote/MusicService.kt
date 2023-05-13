@@ -23,7 +23,7 @@ interface MusicService {
     ): ArtistDTO
 
     @GET("/album/{album_id}")
-    suspend fun getArtistTracksById(
+    suspend fun getAlbumById(
         @Path("album_id") albumId: Long
     ): SpecificAlbumDTO
 

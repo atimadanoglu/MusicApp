@@ -136,7 +136,7 @@ fun AlbumCard(
         Row(modifier = Modifier.fillMaxSize()) {
             AsyncImage(
                 modifier = Modifier.weight(0.3f),
-                model = album.cover,
+                model = album.coverMedium,
                 contentScale = ContentScale.FillBounds,
                 contentDescription = stringResource(id = R.string.album_cover)
             )

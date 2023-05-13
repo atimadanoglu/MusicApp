@@ -4,6 +4,5 @@ data class TrackUI(
     val id: Long = 0,
     val title: String = "",
     val duration: Int = 0,
-    val preview: String = "",
-    val image: String = ""
+    val preview: String = ""
 )

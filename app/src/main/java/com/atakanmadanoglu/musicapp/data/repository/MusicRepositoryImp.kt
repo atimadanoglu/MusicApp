@@ -8,6 +8,7 @@ import com.atakanmadanoglu.musicapp.domain.model.Album
 import com.atakanmadanoglu.musicapp.domain.model.Artist
 import com.atakanmadanoglu.musicapp.domain.model.FavoriteTrack
 import com.atakanmadanoglu.musicapp.domain.model.Genre
+import com.atakanmadanoglu.musicapp.domain.model.SpecificAlbum
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -54,15 +55,12 @@ class MusicRepositoryImp @Inject constructor(
             }
     }
 
-  /*  override suspend fun getArtistTracksById(
-        artistId: Int
-    ): List<Track> = withContext(ioDispatcher) {
-        remoteMusicDataSource
-            .getArtistTracksById(artistId)
-            .map {
-                musicEntityMapper.mapToTrackDomain(it)
-            }
-    }*/
+    override suspend fun getAlbumById(
+        albumId: Long
+    ): SpecificAlbum = withContext(ioDispatcher) {
+        val albumDTO = remoteMusicDataSource.getAlbumById(albumId)
+        musicEntityMapper.mapToSpecificAlbumDomain(albumDTO)
+    }
 
     override fun getFavoriteTracks(): Flow<List<FavoriteTrack>> =
         localMusicDataSource.getMusics().map {

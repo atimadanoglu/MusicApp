@@ -1,5 +1,6 @@
 package com.atakanmadanoglu.musicapp.presentation.artist_details
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -33,7 +35,7 @@ import com.atakanmadanoglu.musicapp.presentation.music_categories.PageTitleTopAp
 
 @Composable
 fun ArtistDetailsRoute(
-    onAlbumCardClicked: (albumId: Int) -> Unit,
+    onAlbumCardClicked: (albumId: Long) -> Unit,
     viewModel: ArtistDetailsViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.artistDetailsUiState.collectAsStateWithLifecycle()
@@ -57,7 +59,7 @@ fun ArtistDetailsScreen(
     albums: List<AlbumUI>,
     artistImageUrl: String,
     artistName: String,
-    onAlbumCardClicked: (albumId: Int) -> Unit
+    onAlbumCardClicked: (albumId: Long) -> Unit
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -102,7 +104,7 @@ fun ArtistImage(
 fun AlbumList(
     modifier: Modifier = Modifier,
     albums: List<AlbumUI>,
-    onAlbumCardClicked: (albumId: Int) -> Unit
+    onAlbumCardClicked: (albumId: Long) -> Unit
 ) {
     LazyColumn(
         modifier = modifier.padding(start = 8.dp, end = 8.dp, top = 8.dp, bottom = 24.dp)
@@ -124,19 +126,20 @@ fun AlbumList(
 @Composable
 fun AlbumCard(
     album: AlbumUI,
-    onAlbumCardClicked: (albumId: Int) -> Unit
+    onAlbumCardClicked: (albumId: Long) -> Unit
 ) {
     OutlinedCard(
         modifier = Modifier
             .fillMaxWidth()
             .height(100.dp)
             .padding(vertical = 4.dp)
-            .clickable { onAlbumCardClicked(album.id) }
+            .clickable { onAlbumCardClicked(album.id) },
+        border = BorderStroke(1.dp, Color.Gray.copy(0.3f))
     ) {
         Row(modifier = Modifier.fillMaxSize()) {
             AsyncImage(
                 modifier = Modifier.weight(0.3f),
-                model = album.cover,
+                model = album.coverMedium,
                 contentScale = ContentScale.FillBounds,
                 contentDescription = stringResource(id = R.string.album_cover)
             )

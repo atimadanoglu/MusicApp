@@ -19,7 +19,7 @@ import com.atakanmadanoglu.musicapp.presentation.music_categories.PageTitleTopAp
 
 @Composable
 fun ArtistListRoute(
-    onCardClicked: (itemId: Int) -> Unit,
+    onCardClicked: (itemId: Long) -> Unit,
     artistListScreenViewModel: ArtistListScreenViewModel = hiltViewModel()
 ) {
     val state by artistListScreenViewModel.artistListUiState.collectAsStateWithLifecycle()
@@ -40,7 +40,7 @@ fun ArtistListRoute(
 fun ArtistListScreen(
     modifier: Modifier = Modifier,
     artists: List<ArtistUI>,
-    onCardClicked: (itemId: Int) -> Unit,
+    onCardClicked: (itemId: Long) -> Unit,
     topBarTitle: String
 ) {
     Scaffold(
@@ -63,7 +63,7 @@ fun ArtistListScreen(
 fun ArtistListVerticalGridList(
     artists: List<ArtistUI>,
     contentPaddingValues: PaddingValues,
-    onCardClicked: (itemId: Int) -> Unit
+    onCardClicked: (itemId: Long) -> Unit
 ) {
     LazyVerticalGrid(
         contentPadding = contentPaddingValues,

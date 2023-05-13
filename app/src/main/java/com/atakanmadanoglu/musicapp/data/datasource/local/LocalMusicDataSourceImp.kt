@@ -15,6 +15,6 @@ class LocalMusicDataSourceImp @Inject constructor(
     ) = musicDao.addMusic(favoriteTrackEntity)
 
     override suspend fun deleteMusicById(
-        musicId: Int
+        musicId: Long
     ) = musicDao.deleteMusicById(musicId)
 }

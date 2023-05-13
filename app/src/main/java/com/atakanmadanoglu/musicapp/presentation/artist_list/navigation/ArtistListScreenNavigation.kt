@@ -13,18 +13,18 @@ private const val genreIdArg = "genreId"
 private const val genreNameArg = "genreName"
 
 internal class ArtistListScreenArgs(
-    val genreId: Int,
+    val genreId: Long,
     val genreName: String
 ) {
     constructor(savedStateHandle: SavedStateHandle):
             this(
-                checkNotNull(savedStateHandle[genreIdArg]) as Int,
+                checkNotNull(savedStateHandle[genreIdArg]) as Long,
                 checkNotNull(savedStateHandle[genreNameArg]) as String
             )
 }
 
 fun NavController.navigateToArtistListScreen(
-    genreId: Int,
+    genreId: Long,
     genreName: String
 ) {
     this.navigate(
@@ -34,14 +34,14 @@ fun NavController.navigateToArtistListScreen(
 }
 
 fun NavGraphBuilder.artistListScreen(
-    onCardClicked: (Int) -> Unit
+    onCardClicked: (Long) -> Unit
 ) {
     composable(
         route = (Screen.ArtistListScreen.route +
                 "/{$genreIdArg}" + "/{$genreNameArg}"),
         arguments = listOf(
             navArgument(genreIdArg) {
-                type = NavType.IntType
+                type = NavType.LongType
             },
             navArgument(genreNameArg) {
                 type = NavType.StringType

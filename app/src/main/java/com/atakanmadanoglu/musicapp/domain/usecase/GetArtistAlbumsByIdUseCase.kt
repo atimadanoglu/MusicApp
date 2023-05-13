@@ -9,7 +9,7 @@ class GetArtistAlbumsByIdUseCase @Inject constructor(
     private val musicMapper: MusicMapper
 ) {
     suspend operator fun invoke(
-        artistId: Int
+        artistId: Long
     ) = repository.getArtistAlbumsById(artistId)
         .map { musicMapper.mapToAlbumUi(it) }
 }

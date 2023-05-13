@@ -1,5 +1,6 @@
 package com.atakanmadanoglu.musicapp.presentation.music_categories
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -43,7 +44,7 @@ import com.atakanmadanoglu.musicapp.presentation.navigation.Screen
 fun MusicCategoriesRoute(
     currentRoute: String,
     onBottomNavItemClicked: (route: String) -> Unit,
-    onCardClicked: (itemId: Int, itemName: String) -> Unit,
+    onCardClicked: (itemId: Long, itemName: String) -> Unit,
     musicCategoryViewModel: MusicCategoriesViewModel = hiltViewModel()
 ) {
     val uiState by musicCategoryViewModel.musicCategoryUiState.collectAsStateWithLifecycle()
@@ -64,7 +65,7 @@ private fun MusicCategoriesScreen(
     modifier: Modifier = Modifier,
     genres: List<GenreUI>,
     onBottomNavItemClicked: (route: String) -> Unit,
-    onCardClicked: (itemId: Int, itemName: String) -> Unit,
+    onCardClicked: (itemId: Long, itemName: String) -> Unit,
     currentRoute: String
 ) {
     Scaffold(
@@ -142,7 +143,7 @@ fun BottomNavigationBar(
 fun MusicCategoryVerticalGridList(
     genres: List<GenreUI>,
     contentPaddingValues: PaddingValues,
-    onCardClicked: (itemId: Int, itemName: String) -> Unit
+    onCardClicked: (itemId: Long, itemName: String) -> Unit
 ) {
     LazyVerticalGrid(
         contentPadding = contentPaddingValues,
@@ -174,7 +175,8 @@ fun CardView(
         modifier = modifier
             .height(200.dp)
             .padding(10.dp)
-            .clickable { onItemClicked() }
+            .clickable { onItemClicked() },
+        border = BorderStroke(1.dp, Color.Gray.copy(0.3f))
     ) {
         Box(
             modifier = Modifier

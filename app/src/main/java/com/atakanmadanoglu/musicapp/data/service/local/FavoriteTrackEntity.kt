@@ -7,12 +7,11 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "track")
 data class FavoriteTrackEntity(
     @PrimaryKey(autoGenerate = false)
-    val id: Int,
+    val id: Long,
     @ColumnInfo(name = "track_name")
     val trackName: String,
     val duration: Int,
     @ColumnInfo(name = "image_url")
     val imageUrl: String,
-    val trackUrl: String,
-    val liked: Boolean
+    val trackUrl: String
 )

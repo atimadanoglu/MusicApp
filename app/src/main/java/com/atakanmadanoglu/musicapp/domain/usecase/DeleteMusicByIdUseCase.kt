@@ -7,6 +7,6 @@ class DeleteMusicByIdUseCase @Inject constructor(
     private val musicRepository: MusicRepository
 ) {
     suspend operator fun invoke(
-        musicId: Int
+        musicId: Long
     ) = musicRepository.deleteMusicById(musicId)
 }

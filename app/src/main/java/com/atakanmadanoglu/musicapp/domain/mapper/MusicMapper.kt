@@ -4,25 +4,29 @@ import com.atakanmadanoglu.musicapp.domain.model.Album
 import com.atakanmadanoglu.musicapp.domain.model.Artist
 import com.atakanmadanoglu.musicapp.domain.model.FavoriteTrack
 import com.atakanmadanoglu.musicapp.domain.model.Genre
+import com.atakanmadanoglu.musicapp.domain.model.SpecificAlbum
 import com.atakanmadanoglu.musicapp.domain.model.Track
+import com.atakanmadanoglu.musicapp.domain.model.Tracks
 import com.atakanmadanoglu.musicapp.presentation.model.AlbumUI
 import com.atakanmadanoglu.musicapp.presentation.model.ArtistUI
 import com.atakanmadanoglu.musicapp.presentation.model.FavoriteTrackUI
 import com.atakanmadanoglu.musicapp.presentation.model.GenreUI
+import com.atakanmadanoglu.musicapp.presentation.model.SpecificAlbumUI
 import com.atakanmadanoglu.musicapp.presentation.model.TrackUI
+import com.atakanmadanoglu.musicapp.presentation.model.TracksUI
 import javax.inject.Inject
 
 class MusicMapper @Inject constructor() {
     fun mapToFavoriteTrackUI(
         favoriteTrack: FavoriteTrack
     ): FavoriteTrackUI = with(favoriteTrack) {
-        FavoriteTrackUI(id, musicName, duration, imageUrl, musicUrl, liked)
+        FavoriteTrackUI(id, musicName, duration, imageUrl, musicUrl)
     }
 
     fun mapToFavoriteTrackDomain(
         favoriteTrackUI: FavoriteTrackUI
     ): FavoriteTrack = with(favoriteTrackUI) {
-        FavoriteTrack(id, musicName, duration, imageUrl, musicUrl, liked)
+        FavoriteTrack(id, musicName, duration, imageUrl, musicUrl)
     }
 
     fun mapToTrackUi(
@@ -40,13 +44,33 @@ class MusicMapper @Inject constructor() {
     fun mapToAlbumUi(
         album: Album
     ): AlbumUI = with(album) {
-        AlbumUI(id, title, cover, releaseDate, trackListUrl)
+        AlbumUI(id, title, coverMedium, releaseDate)
     }
 
     fun mapToAlbumDomain(
         albumUI: AlbumUI
     ): Album = with(albumUI) {
-        Album(id, title, cover, releaseDate, trackListUrl)
+        Album(id, title, coverMedium, releaseDate)
+    }
+
+    fun mapToSpecificAlbumUi(
+        specificAlbum: SpecificAlbum
+    ): SpecificAlbumUI = with(specificAlbum) {
+        val tracks = tracks.data.map {
+            TrackUI(it.id, it.title, it.duration, it.preview)
+        }
+        val tracksUI = TracksUI(tracks)
+        SpecificAlbumUI(id, title, coverMedium, releaseDate, tracksUI)
+    }
+
+    fun mapToSpecificAlbumDomain(
+        specificAlbumUI: SpecificAlbumUI
+    ): SpecificAlbum = with(specificAlbumUI) {
+        val tracks = tracks.data.map {
+            Track(it.id, it.title, it.duration, it.preview)
+        }
+        val tracksDomain = Tracks(tracks)
+        SpecificAlbum(id, title, coverMedium, releaseDate, tracksDomain)
     }
 
     fun mapToArtistUi(

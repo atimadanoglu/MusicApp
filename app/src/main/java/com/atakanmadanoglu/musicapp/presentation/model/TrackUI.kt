@@ -1,8 +1,9 @@
 package com.atakanmadanoglu.musicapp.presentation.model
 
 data class TrackUI(
-    val id: Int,
-    val title: String,
-    val duration: Int,
-    val preview: String
+    val id: Long = 0,
+    val title: String = "",
+    val duration: Int = 0,
+    val preview: String = "",
+    val liked: Boolean = false
 )

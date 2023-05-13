@@ -10,4 +10,5 @@
     <string name="album_cover">Album Cover</string>
     <string name="like_button">Like button</string>
     <string name="track_cover">Track Cover</string>
+    <string name="track_added">%s track is added to your favorite list</string>
 </resources>

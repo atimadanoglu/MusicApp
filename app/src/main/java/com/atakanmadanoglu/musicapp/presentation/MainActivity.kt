@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.atakanmadanoglu.musicapp.presentation.album_details.navigation.albumDetailsScreen
 import com.atakanmadanoglu.musicapp.presentation.album_details.navigation.navigateToAlbumDetails
 import com.atakanmadanoglu.musicapp.presentation.artist_details.navigation.artistDetailsScreen
 import com.atakanmadanoglu.musicapp.presentation.artist_details.navigation.navigateToArtistDetailsScreen
@@ -62,6 +63,7 @@ class MainActivity : ComponentActivity() {
                                 navController.navigateToAlbumDetails(id)
                             }
                         )
+                        albumDetailsScreen()
                     }
                 }
             }

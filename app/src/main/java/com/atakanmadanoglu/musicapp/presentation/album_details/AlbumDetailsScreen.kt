@@ -17,10 +17,14 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -35,6 +39,7 @@ import coil.compose.AsyncImage
 import com.atakanmadanoglu.musicapp.R
 import com.atakanmadanoglu.musicapp.presentation.model.TrackUI
 import com.atakanmadanoglu.musicapp.presentation.music_categories.PageTitleTopAppBar
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -51,6 +56,10 @@ fun AlbumDetailsRoute(
         tracks = uiState.tracks,
         onTrackClicked = {},
         trackImage = uiState.trackImage,
+        snackBarMessage = {
+            val message = "$it is added to your favorite tracks list"
+            message
+        },
         onLikeButtonClicked = {
             viewModel.addTrack(it)
         }
@@ -66,12 +75,18 @@ fun AlbumDetailsScreen(
     tracks: List<TrackUI>,
     onTrackClicked: (Long) -> Unit,
     trackImage: String,
+    snackBarMessage: (String) -> String,
     onLikeButtonClicked: (trackUI: TrackUI) -> Unit
 ) {
+    val snackBarState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
             PageTitleTopAppBar(title = albumName)
+        },
+        snackbarHost = {
+            SnackbarHost(hostState = snackBarState)
         }
     ) {
         Column(
@@ -85,6 +100,9 @@ fun AlbumDetailsScreen(
                 trackImage = trackImage,
                 onLikeButtonClicked = { item ->
                     onLikeButtonClicked(item)
+                    scope.launch {
+                        snackBarState.showSnackbar(snackBarMessage(item.title))
+                    }
                 }
             )
         }
@@ -148,17 +166,6 @@ fun TrackCard(
                     .fillMaxSize(),
                 verticalArrangement = Arrangement.Center
             ) {
-                /*Box(modifier = Modifier.fillMaxSize()) {
-                    *//* val painter = if (!track.liked) {
-                         painterResource(id = R.drawable.heart_outlined)
-                     } else {
-                         painterResource(id = R.drawable.heart_filled)
-                     }*//*
-                    Image(
-                        painter = painterResource(id = R.drawable.heart_outlined),
-                        contentDescription = stringResource(id = R.string.like_button)
-                    )
-                }*/
                 Text(
                     modifier = Modifier.padding(horizontal = 36.dp),
                     text = track.title,
@@ -179,11 +186,6 @@ fun TrackCard(
                     .weight(0.1f)
                     .padding(top = 12.dp)
             ) {
-                /*val painter = if (!track.liked) {
-                    painterResource(id = R.drawable.heart_outlined)
-                } else {
-                    painterResource(id = R.drawable.heart_filled)
-                }*/
                 Image(
                     modifier = Modifier.clickable { onLikeButtonClicked(track) },
                     painter = painterResource(id = R.drawable.heart_outlined),

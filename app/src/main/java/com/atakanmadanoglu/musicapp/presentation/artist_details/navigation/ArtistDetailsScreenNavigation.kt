@@ -12,29 +12,29 @@ import com.atakanmadanoglu.musicapp.presentation.navigation.Screen
 private const val artistIdArg = "artistId"
 
 internal class ArtistDetailsScreenArg(
-    val artistId: Int
+    val artistId: Long
 ) {
     constructor(savedStateHandle: SavedStateHandle) : this(
-        checkNotNull(savedStateHandle[artistIdArg]) as Int
+        checkNotNull(savedStateHandle[artistIdArg]) as Long
     )
 }
 
 
-fun NavController.navigateToArtistDetailsScreen(artistId: Int) {
+fun NavController.navigateToArtistDetailsScreen(artistId: Long) {
     this.navigate(
         Screen.ArtistDetailsScreen.route + "/$artistId"
     )
 }
 
 fun NavGraphBuilder.artistDetailsScreen(
-    onCardClicked: (Int) -> Unit
+    onCardClicked: (Long) -> Unit
 ) {
     composable(
         route = (Screen.ArtistDetailsScreen.route +
                 "/{$artistIdArg}"),
         arguments = listOf(
             navArgument(artistIdArg) {
-                type = NavType.IntType
+                type = NavType.LongType
             }
         )
     ) {

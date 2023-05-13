@@ -33,7 +33,7 @@ import com.atakanmadanoglu.musicapp.presentation.music_categories.PageTitleTopAp
 
 @Composable
 fun ArtistDetailsRoute(
-    onAlbumCardClicked: (albumId: Int) -> Unit,
+    onAlbumCardClicked: (albumId: Long) -> Unit,
     viewModel: ArtistDetailsViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.artistDetailsUiState.collectAsStateWithLifecycle()
@@ -57,7 +57,7 @@ fun ArtistDetailsScreen(
     albums: List<AlbumUI>,
     artistImageUrl: String,
     artistName: String,
-    onAlbumCardClicked: (albumId: Int) -> Unit
+    onAlbumCardClicked: (albumId: Long) -> Unit
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -102,7 +102,7 @@ fun ArtistImage(
 fun AlbumList(
     modifier: Modifier = Modifier,
     albums: List<AlbumUI>,
-    onAlbumCardClicked: (albumId: Int) -> Unit
+    onAlbumCardClicked: (albumId: Long) -> Unit
 ) {
     LazyColumn(
         modifier = modifier.padding(start = 8.dp, end = 8.dp, top = 8.dp, bottom = 24.dp)
@@ -124,7 +124,7 @@ fun AlbumList(
 @Composable
 fun AlbumCard(
     album: AlbumUI,
-    onAlbumCardClicked: (albumId: Int) -> Unit
+    onAlbumCardClicked: (albumId: Long) -> Unit
 ) {
     OutlinedCard(
         modifier = Modifier

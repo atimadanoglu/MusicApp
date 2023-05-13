@@ -8,10 +8,10 @@ class GetArtistTracksByIdUseCase @Inject constructor(
     private val repository: MusicRepository,
     private val musicMapper: MusicMapper
 ) {
-    suspend operator fun invoke(
+    /*suspend operator fun invoke(
         artistId: Int
     ) = repository.getArtistTracksById(artistId)
         .map {
             musicMapper.mapToTrackUi(it)
-        }
+        }*/
 }

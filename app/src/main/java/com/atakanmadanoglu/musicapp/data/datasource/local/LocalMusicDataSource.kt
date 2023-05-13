@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface LocalMusicDataSource {
     fun getMusics(): Flow<List<FavoriteTrackEntity>>
     suspend fun addMusic(favoriteTrackEntity: FavoriteTrackEntity)
-    suspend fun deleteMusicById(musicId: Int)
+    suspend fun deleteMusicById(musicId: Long)
 }

@@ -15,5 +15,5 @@ interface MusicDao {
     suspend fun addMusic(favoriteTrackEntity: FavoriteTrackEntity)
 
     @Query("DELETE FROM track WHERE id = :musicId")
-    suspend fun deleteMusicById(musicId: Int)
+    suspend fun deleteMusicById(musicId: Long)
 }

@@ -8,7 +8,6 @@ import com.atakanmadanoglu.musicapp.domain.model.Album
 import com.atakanmadanoglu.musicapp.domain.model.Artist
 import com.atakanmadanoglu.musicapp.domain.model.FavoriteTrack
 import com.atakanmadanoglu.musicapp.domain.model.Genre
-import com.atakanmadanoglu.musicapp.domain.model.Track
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -29,7 +28,7 @@ class MusicRepositoryImp @Inject constructor(
     }
 
     override suspend fun getArtistsByGenre(
-        genreId: Int
+        genreId: Long
     ): List<Artist> = withContext(ioDispatcher) {
         remoteMusicDataSource
             .getArtistsByGenre(genreId)
@@ -39,14 +38,14 @@ class MusicRepositoryImp @Inject constructor(
     }
 
     override suspend fun getArtistById(
-        artistId: Int
+        artistId: Long
     ): Artist = withContext(ioDispatcher) {
         val artistDTO = remoteMusicDataSource.getArtistById(artistId)
         musicEntityMapper.mapToArtistDomain(artistDTO)
     }
 
     override suspend fun getArtistAlbumsById(
-        artistId: Int
+        artistId: Long
     ): List<Album> = withContext(ioDispatcher) {
         remoteMusicDataSource
             .getArtistAlbumsById(artistId)
@@ -55,7 +54,7 @@ class MusicRepositoryImp @Inject constructor(
             }
     }
 
-    override suspend fun getArtistTracksById(
+  /*  override suspend fun getArtistTracksById(
         artistId: Int
     ): List<Track> = withContext(ioDispatcher) {
         remoteMusicDataSource
@@ -63,7 +62,7 @@ class MusicRepositoryImp @Inject constructor(
             .map {
                 musicEntityMapper.mapToTrackDomain(it)
             }
-    }
+    }*/
 
     override fun getFavoriteTracks(): Flow<List<FavoriteTrack>> =
         localMusicDataSource.getMusics().map {
@@ -80,7 +79,7 @@ class MusicRepositoryImp @Inject constructor(
     }
 
     override suspend fun deleteMusicById(
-        musicId: Int
+        musicId: Long
     ) = withContext(ioDispatcher) {
         localMusicDataSource.deleteMusicById(musicId)
     }

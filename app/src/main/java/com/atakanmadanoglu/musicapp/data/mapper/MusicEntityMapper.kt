@@ -20,14 +20,14 @@ class MusicEntityMapper @Inject constructor() {
     fun mapToFavoriteTrackDomain(
         trackEntity: FavoriteTrackEntity
     ): FavoriteTrack = with(trackEntity) {
-        FavoriteTrack(id, trackName, duration, imageUrl, trackUrl, liked)
+        FavoriteTrack(id, trackName, duration, imageUrl, trackUrl)
     }
 
     fun mapToFavoriteTrackEntity(
         favoriteTrack: FavoriteTrack
     ): FavoriteTrackEntity = with(favoriteTrack) {
         FavoriteTrackEntity(
-            id, musicName, duration, imageUrl, musicUrl, liked
+            id, musicName, duration, imageUrl, musicUrl
         )
     }
 

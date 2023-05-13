@@ -13,6 +13,5 @@ data class FavoriteTrackEntity(
     val duration: Int,
     @ColumnInfo(name = "image_url")
     val imageUrl: String,
-    val trackUrl: String,
-    val liked: Boolean
+    val trackUrl: String
 )

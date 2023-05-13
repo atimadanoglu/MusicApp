@@ -8,4 +8,6 @@
     <string name="liked_musics">Liked Musics</string>
     <string name="artist_image">Artist Image</string>
     <string name="album_cover">Album Cover</string>
+    <string name="like_button">Like button</string>
+    <string name="track_cover">Track Cover</string>
 </resources>

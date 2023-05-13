@@ -20,13 +20,13 @@ class MusicMapper @Inject constructor() {
     fun mapToFavoriteTrackUI(
         favoriteTrack: FavoriteTrack
     ): FavoriteTrackUI = with(favoriteTrack) {
-        FavoriteTrackUI(id, musicName, duration, imageUrl, musicUrl, liked)
+        FavoriteTrackUI(id, musicName, duration, imageUrl, musicUrl)
     }
 
     fun mapToFavoriteTrackDomain(
         favoriteTrackUI: FavoriteTrackUI
     ): FavoriteTrack = with(favoriteTrackUI) {
-        FavoriteTrack(id, musicName, duration, imageUrl, musicUrl, liked)
+        FavoriteTrack(id, musicName, duration, imageUrl, musicUrl)
     }
 
     fun mapToTrackUi(

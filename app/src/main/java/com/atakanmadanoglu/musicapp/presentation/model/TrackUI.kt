@@ -4,5 +4,6 @@ data class TrackUI(
     val id: Long = 0,
     val title: String = "",
     val duration: Int = 0,
-    val preview: String = ""
+    val preview: String = "",
+    val liked: Boolean = false
 )

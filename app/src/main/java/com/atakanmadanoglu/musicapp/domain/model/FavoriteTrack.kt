@@ -5,6 +5,5 @@ data class FavoriteTrack(
     val musicName: String,
     val duration: Int,
     val imageUrl: String,
-    val musicUrl: String,
-    val liked: Boolean
+    val musicUrl: String
 )

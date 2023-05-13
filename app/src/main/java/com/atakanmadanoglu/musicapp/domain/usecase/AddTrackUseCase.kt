@@ -5,7 +5,7 @@ import com.atakanmadanoglu.musicapp.domain.mapper.MusicMapper
 import com.atakanmadanoglu.musicapp.presentation.model.FavoriteTrackUI
 import javax.inject.Inject
 
-class AddMusicUseCase @Inject constructor(
+class AddTrackUseCase @Inject constructor(
     private val musicRepository: MusicRepository,
     private val musicMapper: MusicMapper
 ) {

@@ -15,10 +15,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,12 +31,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.media3.common.MediaItem
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.ui.PlayerView
 import coil.compose.AsyncImage
 import com.atakanmadanoglu.musicapp.R
 import com.atakanmadanoglu.musicapp.presentation.model.TrackUI
@@ -54,7 +61,10 @@ fun AlbumDetailsRoute(
     AlbumDetailsScreen(
         albumName = uiState.albumName,
         tracks = uiState.tracks,
-        onTrackClicked = {},
+        onTrackClicked = {
+            viewModel.setCurrentTrack(it)
+            viewModel.setPlayAudio(true)
+        },
         trackImage = uiState.trackImage,
         snackBarMessage = {
             val message = "$it is added to your favorite tracks list"
@@ -62,7 +72,9 @@ fun AlbumDetailsRoute(
         },
         onLikeButtonClicked = {
             viewModel.addTrack(it)
-        }
+        },
+        trackUri = uiState.currentTrackWillBePlayed,
+        playAudio = uiState.playAudio
     )
 
 }
@@ -73,10 +85,12 @@ fun AlbumDetailsScreen(
     modifier: Modifier = Modifier,
     albumName: String,
     tracks: List<TrackUI>,
-    onTrackClicked: (Long) -> Unit,
+    onTrackClicked: (String) -> Unit,
     trackImage: String,
     snackBarMessage: (String) -> String,
-    onLikeButtonClicked: (trackUI: TrackUI) -> Unit
+    onLikeButtonClicked: (trackUI: TrackUI) -> Unit,
+    playAudio: Boolean,
+    trackUri: String
 ) {
     val snackBarState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
@@ -94,8 +108,8 @@ fun AlbumDetailsScreen(
         ) {
             TrackList(
                 tracks = tracks,
-                onTrackCardClicked = { id ->
-                    onTrackClicked(id)
+                onTrackCardClicked = { uri ->
+                    onTrackClicked(uri)
                 },
                 trackImage = trackImage,
                 onLikeButtonClicked = { item ->
@@ -106,6 +120,31 @@ fun AlbumDetailsScreen(
                 }
             )
         }
+        if (playAudio) {
+            AudioPlayer(
+                uri = trackUri
+            )
+        }
+    }
+}
+
+@Composable
+fun AudioPlayer(
+    uri: String
+) {
+    val context = LocalContext.current
+    val player = ExoPlayer.Builder(context).build()
+    val mediaItem = MediaItem.fromUri(uri)
+    player.setMediaItem(mediaItem)
+    player.prepare()
+    player.play()
+
+    Surface(color = MaterialTheme.colorScheme.background) {
+        AndroidView(
+            factory = { PlayerView(context) },
+            update = { it.player = player },
+            modifier = Modifier.fillMaxSize()
+        )
     }
 }
 
@@ -113,7 +152,7 @@ fun AlbumDetailsScreen(
 fun TrackList(
     modifier: Modifier = Modifier,
     tracks: List<TrackUI>,
-    onTrackCardClicked: (albumId: Long) -> Unit,
+    onTrackCardClicked: (uri: String) -> Unit,
     onLikeButtonClicked: (trackUI: TrackUI) -> Unit,
     trackImage: String
 ) {
@@ -142,7 +181,7 @@ fun TrackList(
 fun TrackCard(
     track: TrackUI,
     trackImage: String,
-    onTrackCardClicked: (albumId: Long) -> Unit,
+    onTrackCardClicked: (uri: String) -> Unit,
     onLikeButtonClicked: (trackUI: TrackUI) -> Unit
 ) {
     OutlinedCard(
@@ -150,7 +189,7 @@ fun TrackCard(
             .fillMaxWidth()
             .height(100.dp)
             .padding(vertical = 4.dp)
-            .clickable { onTrackCardClicked(track.id) },
+            .clickable { onTrackCardClicked(track.preview) },
         border = BorderStroke(1.dp, Color.Gray.copy(0.3f))
     ) {
         Row(modifier = Modifier.fillMaxSize()) {

@@ -18,7 +18,10 @@ import javax.inject.Inject
 data class AlbumDetailsUiState(
     val tracks: List<TrackUI> = listOf(),
     val albumName: String = "",
-    val trackImage: String = ""
+    val trackImage: String = "",
+    val currentTrackWillBePlayed: String = "",
+    val showSnackBar: Boolean = false,
+    val playAudio: Boolean = false
 )
 
 
@@ -56,6 +59,18 @@ class AlbumDetailsViewModel @Inject constructor(
         )
         viewModelScope.launch {
             addTrackUseCase(favoriteTrackUI)
+        }
+    }
+
+    fun setCurrentTrack(uri: String) {
+        _albumsDetailsUiState.update {
+            it.copy(currentTrackWillBePlayed = uri)
+        }
+    }
+
+    fun setPlayAudio(value: Boolean) {
+        _albumsDetailsUiState.update {
+            it.copy(playAudio = value)
         }
     }
 }

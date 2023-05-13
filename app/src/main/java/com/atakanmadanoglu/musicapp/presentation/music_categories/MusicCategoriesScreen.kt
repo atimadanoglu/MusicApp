@@ -1,5 +1,6 @@
 package com.atakanmadanoglu.musicapp.presentation.music_categories
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -174,7 +175,8 @@ fun CardView(
         modifier = modifier
             .height(200.dp)
             .padding(10.dp)
-            .clickable { onItemClicked() }
+            .clickable { onItemClicked() },
+        border = BorderStroke(1.dp, Color.Gray.copy(0.3f))
     ) {
         Box(
             modifier = Modifier

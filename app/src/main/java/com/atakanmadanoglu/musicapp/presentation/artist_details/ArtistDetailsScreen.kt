@@ -1,5 +1,6 @@
 package com.atakanmadanoglu.musicapp.presentation.artist_details
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -131,7 +133,8 @@ fun AlbumCard(
             .fillMaxWidth()
             .height(100.dp)
             .padding(vertical = 4.dp)
-            .clickable { onAlbumCardClicked(album.id) }
+            .clickable { onAlbumCardClicked(album.id) },
+        border = BorderStroke(1.dp, Color.Gray.copy(0.3f))
     ) {
         Row(modifier = Modifier.fillMaxSize()) {
             AsyncImage(

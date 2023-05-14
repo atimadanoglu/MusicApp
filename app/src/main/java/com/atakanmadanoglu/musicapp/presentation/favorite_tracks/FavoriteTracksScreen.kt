@@ -188,6 +188,9 @@ fun FavoriteTrackCard(
                     .fillMaxSize(),
                 verticalArrangement = Arrangement.Center
             ) {
+                val min = track.duration / 60
+                val sec = track.duration % 60
+                val durationText = "$min:$sec\'\'"
                 Text(
                     modifier = Modifier.padding(horizontal = 36.dp),
                     text = track.musicName,
@@ -198,7 +201,7 @@ fun FavoriteTrackCard(
                 Text(
                     modifier = Modifier.padding(horizontal = 36.dp),
                     maxLines = 2,
-                    text = track.duration.toString(),
+                    text = durationText,
                     fontSize = 10.sp
                 )
             }

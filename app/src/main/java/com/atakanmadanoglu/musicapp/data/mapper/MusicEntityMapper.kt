@@ -5,8 +5,6 @@ import com.atakanmadanoglu.musicapp.data.service.remote.dto.AlbumDTO
 import com.atakanmadanoglu.musicapp.data.service.remote.dto.ArtistDTO
 import com.atakanmadanoglu.musicapp.data.service.remote.dto.GenreDTO
 import com.atakanmadanoglu.musicapp.data.service.remote.dto.SpecificAlbumDTO
-import com.atakanmadanoglu.musicapp.data.service.remote.dto.TrackDTO
-import com.atakanmadanoglu.musicapp.data.service.remote.dto.TracksDTO
 import com.atakanmadanoglu.musicapp.domain.model.Album
 import com.atakanmadanoglu.musicapp.domain.model.Artist
 import com.atakanmadanoglu.musicapp.domain.model.FavoriteTrack
@@ -31,18 +29,6 @@ class MusicEntityMapper @Inject constructor() {
         )
     }
 
-    fun mapToTrackDomain(
-        trackDTO: TrackDTO
-    ): Track = with(trackDTO) {
-        Track(id, title, duration, preview)
-    }
-
-    fun mapToTrackDTO(
-        track: Track
-    ): TrackDTO = with(track) {
-        TrackDTO(id, title, duration, preview)
-    }
-
     fun mapToSpecificAlbumDomain(
         specificAlbumDTO: SpecificAlbumDTO
     ): SpecificAlbum = with(specificAlbumDTO) {
@@ -53,26 +39,10 @@ class MusicEntityMapper @Inject constructor() {
         SpecificAlbum(id, title, cover_medium, release_date, tracksDomain)
     }
 
-    fun mapToSpecificAlbumDTO(
-        specificAlbum: SpecificAlbum
-    ): SpecificAlbumDTO = with(specificAlbum) {
-        val tracks = this.tracks.data.map {
-            TrackDTO(it.id, it.title, it.duration, it.preview)
-        }
-        val tracksDTO = TracksDTO(tracks)
-        SpecificAlbumDTO(id, title, coverMedium, releaseDate, tracksDTO)
-    }
-
     fun mapToAlbumDomain(
         albumDTO: AlbumDTO
     ): Album = with(albumDTO) {
         Album(id, title, cover_medium, release_date)
-    }
-
-    fun mapToAlbumDTO(
-        album: Album
-    ): AlbumDTO = with(album) {
-        AlbumDTO(id, title, coverMedium, releaseDate)
     }
 
     fun mapToArtistDomain(
@@ -81,21 +51,9 @@ class MusicEntityMapper @Inject constructor() {
         Artist(id, name, picture_medium, tracklist)
     }
 
-    fun mapToArtistDTO(
-        artist: Artist
-    ): ArtistDTO = with(artist) {
-        ArtistDTO(id, name, picture, trackListUrl)
-    }
-
     fun mapToGenreDomain(
         genreDTO: GenreDTO
     ): Genre = with(genreDTO) {
         Genre(id, name, picture)
-    }
-
-    fun mapToGenreDTO(
-        genre: Genre
-    ): GenreDTO = with(genre) {
-        GenreDTO(id, name, pictureUrl)
     }
 }

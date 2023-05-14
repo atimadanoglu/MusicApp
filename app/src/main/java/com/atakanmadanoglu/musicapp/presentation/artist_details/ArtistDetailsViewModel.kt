@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 data class ArtistDetailsUIState(
     val artist: ArtistUI = ArtistUI(),
     val albums: List<AlbumUI> = listOf(),

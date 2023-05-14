@@ -19,7 +19,6 @@ internal class AlbumDetailsArgs(
     )
 }
 
-
 fun NavController.navigateToAlbumDetails(
     albumId: Long
 ) {

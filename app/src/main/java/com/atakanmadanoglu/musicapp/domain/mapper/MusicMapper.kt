@@ -5,8 +5,6 @@ import com.atakanmadanoglu.musicapp.domain.model.Artist
 import com.atakanmadanoglu.musicapp.domain.model.FavoriteTrack
 import com.atakanmadanoglu.musicapp.domain.model.Genre
 import com.atakanmadanoglu.musicapp.domain.model.SpecificAlbum
-import com.atakanmadanoglu.musicapp.domain.model.Track
-import com.atakanmadanoglu.musicapp.domain.model.Tracks
 import com.atakanmadanoglu.musicapp.presentation.model.AlbumUI
 import com.atakanmadanoglu.musicapp.presentation.model.ArtistUI
 import com.atakanmadanoglu.musicapp.presentation.model.FavoriteTrackUI
@@ -29,28 +27,10 @@ class MusicMapper @Inject constructor() {
         FavoriteTrack(id, musicName, duration, imageUrl, musicUrl)
     }
 
-    fun mapToTrackUi(
-        track: Track
-    ): TrackUI = with(track) {
-        TrackUI(id, title, duration, preview)
-    }
-
-    fun mapToTrackDomain(
-        trackUI: TrackUI
-    ): Track = with(trackUI) {
-        Track(id, title, duration, preview)
-    }
-
     fun mapToAlbumUi(
         album: Album
     ): AlbumUI = with(album) {
         AlbumUI(id, title, coverMedium, releaseDate)
-    }
-
-    fun mapToAlbumDomain(
-        albumUI: AlbumUI
-    ): Album = with(albumUI) {
-        Album(id, title, coverMedium, releaseDate)
     }
 
     fun mapToSpecificAlbumUi(
@@ -63,37 +43,15 @@ class MusicMapper @Inject constructor() {
         SpecificAlbumUI(id, title, coverMedium, releaseDate, tracksUI)
     }
 
-    fun mapToSpecificAlbumDomain(
-        specificAlbumUI: SpecificAlbumUI
-    ): SpecificAlbum = with(specificAlbumUI) {
-        val tracks = tracks.data.map {
-            Track(it.id, it.title, it.duration, it.preview)
-        }
-        val tracksDomain = Tracks(tracks)
-        SpecificAlbum(id, title, coverMedium, releaseDate, tracksDomain)
-    }
-
     fun mapToArtistUi(
         artist: Artist
     ): ArtistUI = with(artist) {
         ArtistUI(id, name, picture, trackListUrl)
     }
 
-    fun mapToArtistDomain(
-        artistUi: ArtistUI
-    ): Artist = with(artistUi) {
-        Artist(id, name, image, trackListUrl)
-    }
-
     fun mapToGenreUi(
         genre: Genre
     ): GenreUI = with(genre) {
         GenreUI(id, name, pictureUrl)
-    }
-
-    fun mapToGenreDomain(
-        genreUI: GenreUI
-    ): Genre = with(genreUI) {
-        Genre(id, name, pictureUrl)
     }
 }

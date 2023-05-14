@@ -24,7 +24,6 @@ data class AlbumDetailsUiState(
     val albumName: String = "",
     val trackImage: String = "",
     val currentTrackWillBePlayed: String = "",
-    val showSnackBar: Boolean = false,
     val playAudio: Boolean = false,
     val synchronize: Boolean = false
 )
@@ -54,7 +53,6 @@ class AlbumDetailsViewModel @Inject constructor(
                     trackImage = album.coverMedium,
                     synchronize = true
                 )
-
             }
         }
     }
@@ -69,36 +67,13 @@ class AlbumDetailsViewModel @Inject constructor(
             }
         }
     }
-   /* fun make() {
-        viewModelScope.launch {
-            val a = getFavoriteTracksUseCase()
-                .combine(getAlbumByIdUseCase(albumsDetailsArgs.albumId)) { favTracks, album ->
-                val ids = favTracks.map { it.id }
-                val updatedData = album.tracks.data.map {
-                    if (!ids.contains(it.id)) {
-                        it
-                    } else {
-                        it.copy(liked = true)
-                    }
-                }
-                _albumsDetailsUiState.update {
-                    it.copy(
-                        tracks = updatedData,
-                        favoriteTracks = favTracks
-                    )
-                }
-            }
-        }
-    }*/
 
     fun synchronizeData() {
-        val favoriteTracksIds = _albumsDetailsUiState.value.favoriteTracks.map { it.id }.toSet()
-        println("fav size ${favoriteTracksIds.size}")
+        val favoriteTracksIds = _albumsDetailsUiState.value.favoriteTracks.map { it.id }
         val updatedTrackUIs = _albumsDetailsUiState.value.tracks.map { trackUI ->
             if (!favoriteTracksIds.contains(trackUI.id)) {
                 trackUI
             } else {
-                println("içermiyor")
                 trackUI.copy(liked = true)
             }
         }

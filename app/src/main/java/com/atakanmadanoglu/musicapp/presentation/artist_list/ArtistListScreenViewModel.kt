@@ -44,5 +44,4 @@ class ArtistListScreenViewModel @Inject constructor(
             }
         }
     }
-
 }

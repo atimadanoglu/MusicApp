@@ -27,9 +27,15 @@ fun NavController.navigateToArtistListScreen(
     genreId: Long,
     genreName: String
 ) {
+    // I checked it because / character causes an error
+    val checkedGenreName = if (genreName.contains("/")) {
+        genreName.replace("/", "-")
+    } else {
+        genreName
+    }
     this.navigate(
         route = Screen.ArtistListScreen.route +
-                "/$genreId" + "/$genreName"
+                "/$genreId" + "/$checkedGenreName"
     )
 }
 

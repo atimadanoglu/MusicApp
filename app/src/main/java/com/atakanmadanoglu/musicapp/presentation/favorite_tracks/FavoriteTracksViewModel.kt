@@ -20,7 +20,6 @@ data class FavoriteTracksUiState(
     val playAudio: Boolean = false
 )
 
-
 @HiltViewModel
 class FavoriteTracksViewModel @Inject constructor(
     private val getFavoriteTracksUseCase: GetFavoriteTracksUseCase,

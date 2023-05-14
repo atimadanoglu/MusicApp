@@ -1,4 +1,4 @@
-package com.atakanmadanoglu.musicapp.presentation.album_details
+package com.atakanmadanoglu.musicapp.presentation.favorite_tracks
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -15,12 +15,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,92 +29,82 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.media3.common.MediaItem
-import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.ui.PlayerView
 import coil.compose.AsyncImage
 import com.atakanmadanoglu.musicapp.R
-import com.atakanmadanoglu.musicapp.presentation.model.TrackUI
+import com.atakanmadanoglu.musicapp.presentation.album_details.AudioPlayer
+import com.atakanmadanoglu.musicapp.presentation.model.FavoriteTrackUI
+import com.atakanmadanoglu.musicapp.presentation.music_categories.BottomNavigationBar
 import com.atakanmadanoglu.musicapp.presentation.music_categories.PageTitleTopAppBar
+import com.atakanmadanoglu.musicapp.presentation.navigation.BottomNavItem
+import com.atakanmadanoglu.musicapp.presentation.navigation.Screen
 import kotlinx.coroutines.launch
 
-
 @Composable
-fun AlbumDetailsRoute(
-    viewModel: AlbumDetailsViewModel = hiltViewModel()
+fun FavoriteTracksRoute(
+    currentRoute: String,
+    onBottomNavItemClicked: (String) -> Unit,
+    viewModel: FavoriteTracksViewModel = hiltViewModel()
 ) {
-    val uiState by viewModel.albumDetailsUiState.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     LaunchedEffect(key1 = Unit) {
         viewModel.getFavoriteTracks()
-        viewModel.getArtistTracks()
     }
 
-    if (uiState.synchronize) {
-        LaunchedEffect(key1 = Unit) {
-            viewModel.synchronizeData()
-        }
-    }
-
-    val addMessage = stringResource(id = R.string.track_added)
-    val deleteMessage = stringResource(id = R.string.track_removed)
-
-    AlbumDetailsScreen(
-        albumName = uiState.albumName,
+    FavoriteTracksScreen(
         tracks = uiState.tracks,
         onTrackClicked = {
             viewModel.setCurrentTrack(it)
             viewModel.setPlayAudio(true)
         },
-        trackImage = uiState.trackImage,
-        snackBarMessage = { name, liked ->
-            val message = if (!liked) {
-                "$name $addMessage"
-            } else {
-                "$name $deleteMessage"
-            }
+        snackBarMessage = {
+            val message = "$it is removed from your favorite tracks list"
             message
         },
         onLikeButtonClicked = {
-            if (!it.liked) {
-                viewModel.addTrack(it)
-            }
-            else {
-                viewModel.deleteTrack(it.id)
-            }
+            viewModel.deleteTrack(it)
         },
         trackUri = uiState.currentTrackWillBePlayed,
-        playAudio = uiState.playAudio
+        playAudio = uiState.playAudio,
+        currentRoute = currentRoute,
+        onBottomNavItemClicked = {
+            onBottomNavItemClicked(it)
+        }
     )
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AlbumDetailsScreen(
+fun FavoriteTracksScreen(
     modifier: Modifier = Modifier,
-    albumName: String,
-    tracks: List<TrackUI>,
+    tracks: List<FavoriteTrackUI>,
     onTrackClicked: (String) -> Unit,
-    trackImage: String,
-    snackBarMessage: (String, Boolean) -> String,
-    onLikeButtonClicked: (trackUI: TrackUI) -> Unit,
+    snackBarMessage: (String) -> String,
+    onLikeButtonClicked: (id: Long) -> Unit,
     playAudio: Boolean,
-    trackUri: String
+    trackUri: String,
+    currentRoute: String,
+    onBottomNavItemClicked: (String) -> Unit
 ) {
     val snackBarState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
-            PageTitleTopAppBar(title = albumName)
+            PageTitleTopAppBar(title = stringResource(id = Screen.FavoriteTracksScreen.titleId))
+        },
+        bottomBar = {
+            BottomNavigationBar(
+                items = listOf(BottomNavItem.Category, BottomNavItem.Favorites),
+                onBottomNavItemClicked = { onBottomNavItemClicked(it) },
+                currentRoute = currentRoute,
+            )
         },
         snackbarHost = {
             SnackbarHost(hostState = snackBarState)
@@ -125,16 +113,15 @@ fun AlbumDetailsScreen(
         Column(
             modifier = Modifier.padding(it)
         ) {
-            TrackList(
+            FavoriteTracksList(
                 tracks = tracks,
                 onTrackCardClicked = { uri ->
                     onTrackClicked(uri)
                 },
-                trackImage = trackImage,
-                onLikeButtonClicked = { item ->
-                    onLikeButtonClicked(item)
+                onLikeButtonClicked = { id, name ->
+                    onLikeButtonClicked(id)
                     scope.launch {
-                        snackBarState.showSnackbar(snackBarMessage(item.title, item.liked))
+                        snackBarState.showSnackbar(snackBarMessage(name))
                     }
                 }
             )
@@ -148,32 +135,11 @@ fun AlbumDetailsScreen(
 }
 
 @Composable
-fun AudioPlayer(
-    uri: String
-) {
-    val context = LocalContext.current
-    val player = ExoPlayer.Builder(context).build()
-    val mediaItem = MediaItem.fromUri(uri)
-    player.setMediaItem(mediaItem)
-    player.prepare()
-    player.play()
-
-    Surface(color = MaterialTheme.colorScheme.background) {
-        AndroidView(
-            factory = { PlayerView(context) },
-            update = { it.player = player },
-            modifier = Modifier.fillMaxSize()
-        )
-    }
-}
-
-@Composable
-fun TrackList(
+fun FavoriteTracksList(
     modifier: Modifier = Modifier,
-    tracks: List<TrackUI>,
+    tracks: List<FavoriteTrackUI>,
     onTrackCardClicked: (uri: String) -> Unit,
-    onLikeButtonClicked: (trackUI: TrackUI) -> Unit,
-    trackImage: String
+    onLikeButtonClicked: (id: Long, name: String) -> Unit,
 ) {
     LazyColumn(
         modifier = modifier.padding(start = 8.dp, end = 8.dp, top = 8.dp, bottom = 24.dp)
@@ -182,14 +148,13 @@ fun TrackList(
             items = tracks,
             key = { it.id }
         ) { track ->
-            TrackCard(
+            FavoriteTrackCard(
                 track = track,
                 onTrackCardClicked = {
                     onTrackCardClicked(it)
                 },
-                trackImage = trackImage,
-                onLikeButtonClicked = { item ->
-                    onLikeButtonClicked(item)
+                onLikeButtonClicked = { id, name ->
+                    onLikeButtonClicked(id, name)
                 }
             )
         }
@@ -197,24 +162,23 @@ fun TrackList(
 }
 
 @Composable
-fun TrackCard(
-    track: TrackUI,
-    trackImage: String,
+fun FavoriteTrackCard(
+    track: FavoriteTrackUI,
     onTrackCardClicked: (uri: String) -> Unit,
-    onLikeButtonClicked: (trackUI: TrackUI) -> Unit
+    onLikeButtonClicked: (id: Long, name: String) -> Unit
 ) {
     OutlinedCard(
         modifier = Modifier
             .fillMaxWidth()
             .height(100.dp)
             .padding(vertical = 4.dp)
-            .clickable { onTrackCardClicked(track.preview) },
+            .clickable { onTrackCardClicked(track.musicUrl) },
         border = BorderStroke(1.dp, Color.Gray.copy(0.3f))
     ) {
         Row(modifier = Modifier.fillMaxSize()) {
             AsyncImage(
                 modifier = Modifier.weight(0.3f),
-                model = trackImage,
+                model = track.imageUrl,
                 contentScale = ContentScale.FillBounds,
                 contentDescription = stringResource(id = R.string.track_cover)
             )
@@ -226,7 +190,7 @@ fun TrackCard(
             ) {
                 Text(
                     modifier = Modifier.padding(horizontal = 36.dp),
-                    text = track.title,
+                    text = track.musicName,
                     maxLines = 2,
                     fontSize = 18.sp
                 )
@@ -244,23 +208,11 @@ fun TrackCard(
                     .weight(0.1f)
                     .padding(top = 12.dp)
             ) {
-                val imageId = if (track.liked) {
-                    R.drawable.heart_filled
-                } else {
-                    R.drawable.heart_outlined
-                }
-
-                val colorFilter: ColorFilter = if (track.liked) {
-                    ColorFilter.tint(Color.Red)
-                } else {
-                    ColorFilter.tint(Color.Gray)
-                }
-
                 Image(
-                    modifier = Modifier.clickable { onLikeButtonClicked(track) },
-                    painter = painterResource(id = imageId),
+                    modifier = Modifier.clickable { onLikeButtonClicked(track.id, track.musicName) },
+                    painter = painterResource(id = R.drawable.heart_filled),
                     contentDescription = stringResource(id = R.string.like_button),
-                    colorFilter = colorFilter
+                    colorFilter = ColorFilter.tint(Color.Red)
                 )
             }
         }

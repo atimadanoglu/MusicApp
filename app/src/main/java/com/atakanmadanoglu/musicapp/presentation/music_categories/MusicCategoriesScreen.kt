@@ -118,13 +118,12 @@ fun BottomNavigationBar(
         containerColor = Color.White
     ) {
         items.forEach { item ->
-            val selected = (item.route == currentRoute)
+            val selected = item.route == currentRoute
             val iconId = if (!selected) {
                 item.iconId
             } else {
                 item.secondaryIconId
             }
-
             NavigationBarItem(
                 icon = {
                     Icon(
@@ -133,7 +132,9 @@ fun BottomNavigationBar(
                     )
                 },
                 selected = selected,
-                onClick = { onBottomNavItemClicked(item.route) }
+                onClick = {
+                    onBottomNavItemClicked(item.route)
+                }
             )
         }
     }

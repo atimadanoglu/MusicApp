@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -31,7 +32,9 @@ class MainActivity : ComponentActivity() {
                 darkTheme = false
             ) {
                 val navController = rememberNavController()
-                val backStackEntry = navController.currentBackStackEntryAsState()
+                val backStackEntry by navController.currentBackStackEntryAsState()
+                val currentRoute =
+                    backStackEntry?.destination?.route ?: Screen.MusicCategoryScreen.route
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -41,8 +44,6 @@ class MainActivity : ComponentActivity() {
                         navController = navController,
                         startDestination = Screen.MusicCategoryScreen.route
                     ) {
-                        val currentRoute =
-                            backStackEntry.value?.destination?.route ?: Screen.MusicCategoryScreen.route
                         musicCategoriesScreen(
                             currentRoute = currentRoute,
                             onBottomNavItemClicked = { route ->
@@ -57,7 +58,12 @@ class MainActivity : ComponentActivity() {
                                 navController.navigateToArtistDetailsScreen(id)
                             }
                         )
-                        favoriteTracksScreen()
+                        favoriteTracksScreen(
+                            currentRoute = currentRoute,
+                            onBottomNavItemClicked = {
+                                navController.navigate(it)
+                            }
+                        )
                         artistDetailsScreen(
                             onCardClicked = { id->
                                 navController.navigateToAlbumDetails(id)

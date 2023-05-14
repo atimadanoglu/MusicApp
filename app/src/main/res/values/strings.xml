@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">MusicApp</string>
+    <string name="favorites">Favorite Musics</string>
+    <string name="music_category">Music Categories</string>
+    <string name="artist_list">Artist List</string>
+    <string name="artist_details">Artist Details</string>
+    <string name="album_details">Album Details</string>
+    <string name="liked_musics">Favorite Tracks</string>
+    <string name="artist_image">Artist Image</string>
+    <string name="album_cover">Album Cover</string>
+    <string name="like_button">Like button</string>
+    <string name="track_cover">Track Cover</string>
+    <string name="track_added">track is added to your favorite list</string>
+    <string name="track_removed">track is removed from your favorite list</string>
 </resources>

@@ -3,10 +3,10 @@
 <strong>This music app</strong> allows users to explore various music genres and discover artists associated with each genre. Users can browse through artist albums, view detailed information about the albums, and listen to 30-second song previews. Additionally, users have the ability to mark their favorite songs and easily manage their favorites by adding or removing tracks from the list. It provides a convenient way to explore music, discover new artists, and enjoy personalized music experiences.".
 
 
-![Screenshot_20230514_200610](https://github.com/atimadanoglu/MusicApp/assets/83606884/72ee99c4-6b46-4663-87e7-a0d55f6deae2) 
-![Screenshot_20230514_200539](https://github.com/atimadanoglu/MusicApp/assets/83606884/86e2ae48-2737-4ce9-a1ef-0974f96abcab) 
-![Screenshot_20230514_200649](https://github.com/atimadanoglu/MusicApp/assets/83606884/c3846562-ef21-4f7c-962a-0448aa57d89f)
 
+![Screenshot_20230514_200610](https://github.com/atimadanoglu/MusicApp/assets/83606884/68c64be5-a762-4016-99e2-dbe1ec4cc380)
+![Screenshot_20230514_200649](https://github.com/atimadanoglu/MusicApp/assets/83606884/c2b2251d-3289-42bb-9343-398fde0b373e)
+![Screenshot_20230514_200539](https://github.com/atimadanoglu/MusicApp/assets/83606884/83820fce-9910-4e37-bc95-e37c3126fc5d)
 
 
 # Built With 🛠

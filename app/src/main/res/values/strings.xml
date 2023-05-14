@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MusicApp</string>
+    <string name="app_name">Music App</string>
     <string name="favorites">Favorite Musics</string>
     <string name="music_category">Music Categories</string>
     <string name="artist_list">Artist List</string>

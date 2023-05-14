@@ -221,21 +221,22 @@ fun TrackCard(
             Column(
                 modifier = Modifier
                     .weight(0.6f)
+                    .padding(top = 16.dp)
                     .fillMaxSize(),
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.Top
             ) {
                 val min = track.duration / 60
                 val sec = track.duration % 60
                 val durationText = "$min:$sec\'\'"
                 Text(
-                    modifier = Modifier.padding(horizontal = 36.dp),
+                    modifier = Modifier.padding(start = 36.dp),
                     text = track.title,
                     maxLines = 2,
-                    fontSize = 18.sp
+                    fontSize = 16.sp
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    modifier = Modifier.padding(horizontal = 36.dp),
+                    modifier = Modifier.padding(start = 36.dp),
                     maxLines = 2,
                     text = durationText,
                     fontSize = 10.sp

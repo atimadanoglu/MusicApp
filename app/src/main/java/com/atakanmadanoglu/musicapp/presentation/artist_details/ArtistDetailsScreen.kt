@@ -146,17 +146,19 @@ fun AlbumCard(
             Column(
                 modifier = Modifier
                     .weight(0.7f)
+                    .padding(top = 16.dp, end = 8.dp)
                     .fillMaxSize(),
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.Top
             ) {
                 Text(
-                    modifier = Modifier.padding(horizontal = 36.dp),
+                    modifier = Modifier.padding(start = 36.dp),
                     text = album.title,
-                    fontSize = 18.sp
+                    maxLines = 2,
+                    fontSize = 16.sp
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    modifier = Modifier.padding(horizontal = 36.dp),
+                    modifier = Modifier.padding(start = 36.dp),
                     text = album.releaseDate,
                     fontSize = 10.sp
                 )
